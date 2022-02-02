@@ -10,36 +10,43 @@
 // ==/UserScript==
 
 (function() {
-    'use strict';
+  'use strict';
 
-    setInterval(()=> {
-        let dogs = document.querySelectorAll('h6.grid-card__title');
+  setInterval(()=> {
+      let dogs = document.querySelectorAll('h6.grid-card__title');
 
-        dogs.forEach(doggo=> {
-            let id = doggo.title.split(" ")[2].slice(1);
-            let element = document.createElement('div')
+      dogs.forEach(doggo=> {
+          let id = doggo.title.split(" ")[2].slice(1);
+          let element = document.createElement('div')
 
-            let findRarity = rarities.find(l=> l.id === parseInt(id))
-            if(!findRarity) return
-            updateColors(parseInt(findRarity.rank), element);
-            let rankText = document.createElement('p');
-            let topPercentText = document.createElement('p');
-            rankText.innerText = `Rank: ${findRarity.rank}`;
-            topPercentText.innerText = getDisplayPercent(findRarity.rank);
-            element.appendChild(rankText);
-            element.appendChild(topPercentText);
-            element.className = `ff${findRarity.rank}`
-            element.style.fontWeight='bold'
-            element.style.position = 'absolute'
-            element.style.transform = 'translate(150px, 3px)'
-            let added = document.querySelector(`.ff${findRarity.rank}`)
-            if(doggo && !added){
-                doggo.parentNode.appendChild(element)
-            }
-        })
+          let findRarity = rarities.find(l=> l.id === parseInt(id))
+          if(!findRarity) return
+          updateColors(parseInt(findRarity.rank), element);
+          let rankText = document.createElement('span');
+          let divider = document.createElement('span');
+
+          let topPercentText = document.createElement('span');
+          rankText.innerText = `#${findRarity.rank}`;
+          divider.innerText = ` / `;
+          topPercentText.innerText = getDisplayPercent(findRarity.rank);
+          element.appendChild(rankText);
+          element.appendChild(divider);
+          element.appendChild(topPercentText);
+          element.className = `ff${findRarity.rank}`
+          element.style.position = 'absolute'
+          element.style.bottom = '110px'
+          element.style.left = '10px'
+          element.style.padding = '3px'
+          element.style.borderRadius = '4px'
+
+          let added = document.querySelector(`.ff${findRarity.rank}`)
+          if(doggo && !added){
+              doggo.parentNode.appendChild(element)
+          }
+      })
 
 
-    },1000)
+  },1000)
 
     function updateColors(rank, element){
         switch(true) {
